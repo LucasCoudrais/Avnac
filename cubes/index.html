@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cubes</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        height: 100vh;
+        margin: 0;
+      }
+
+      canvas {
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="myCanvas" width="800" height="800"></canvas>
+
+    <script>
+      const canvas = document.getElementById("myCanvas");
+      const ctx = canvas.getContext("2d");
+      const heightPortion = canvas.height / 20;
+      const widthPortion = canvas.width / 10;
+
+      function drawLine(from, to) {
+        ctx.moveTo(from[0], from[1]);
+        ctx.lineTo(to[0], to[1]);
+        ctx.closePath();
+        ctx.stroke();
+      }
+
+      function drawOneHorizontalStep(heightIndex, shifted) {
+        for (
+          let index = shifted ? -0.5 : 0;
+          widthPortion * index < canvas.width;
+          index++
+        ) {
+          drawLine(
+            [widthPortion * index, heightPortion * heightIndex],
+            [widthPortion * (index + 1), heightPortion * (heightIndex + 1)]
+          );
+          drawLine(
+            [widthPortion * index, heightPortion * (heightIndex + 1)],
+            [widthPortion * (index + 1), heightPortion * heightIndex]
+          );
+        }
+      }
+
+      // function drawOneVerticalStep() {
+      //   for (
+      //     let index = 0;
+      //     widthPortion * index + widthPortion / 2 < canvas.width;
+      //     index++
+      //   ) {
+      //     drawLine(
+      //       [widthPortion * index, heightPortion * (heightIndex + 1)],
+      //       [widthPortion * index, heightPortion * (heightIndex + 2)]
+      //     );
+      //     drawLine(
+      //       [
+      //         widthPortion * index + widthPortion / 2,
+      //         heightPortion * (heightIndex + 0.5),
+      //       ],
+      //       [
+      //         widthPortion * index + widthPortion / 2,
+      //         heightPortion * (heightIndex + 1) +
+      //           heightPortion * (heightIndex + 0.5),
+      //       ]
+      //     );
+      //   }
+      // }
+
+      function drawCubes() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+
+        drawOneHorizontalStep(0, false);
+        // drawOneVerticalStep(0);
+        drawOneHorizontalStep(1.5, true);
+        // drawOneVerticalStep(1);
+        drawOneHorizontalStep(3, false);
+        drawOneHorizontalStep(4.5, true);
+        // for (
+        //   let heightIndex = 0;
+        //   heightPortion * (heightIndex + 1) < canvas.height;
+        //   heightIndex++
+        // ) {}
+      }
+
+      // Initial draw
+      drawCubes();
+    </script>
+  </body>
+</html>
