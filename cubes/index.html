@@ -7,11 +7,11 @@
       body {
         font-family: Arial, sans-serif;
         display: flex;
-        flex-direction: column;
         align-items: center;
-        justify-content: space-around;
+        justify-content: center;
         height: 100vh;
         margin: 0;
+        gap: 10rem;
       }
 
       canvas {
@@ -20,13 +20,18 @@
     </style>
   </head>
   <body>
+    <div id="controls">
+      <label for="size">Taille : <span id="sizeValue">10</span> px</label>
+      <input type="range" id="size" min="2" max="20" value="10" />
+    </div>
     <canvas id="myCanvas" width="800" height="800"></canvas>
 
     <script>
       const canvas = document.getElementById("myCanvas");
       const ctx = canvas.getContext("2d");
-      const heightPortion = canvas.height / 20;
-      const widthPortion = canvas.width / 10;
+
+      const sizeInput = document.getElementById("size");
+      const sizeValue = document.getElementById("sizeValue");
 
       function drawLine(from, to) {
         ctx.moveTo(from[0], from[1]);
@@ -35,7 +40,12 @@
         ctx.stroke();
       }
 
-      function drawOneHorizontalStep(heightIndex, shifted) {
+      function drawOneHorizontalStep(
+        heightIndex,
+        shifted,
+        widthPortion,
+        heightPortion
+      ) {
         for (
           let index = shifted ? -0.5 : 0;
           widthPortion * index < canvas.width;
@@ -52,7 +62,12 @@
         }
       }
 
-      function drawOneVerticalStep(widthIndex, shifted) {
+      function drawOneVerticalStep(
+        widthIndex,
+        shifted,
+        widthPortion,
+        heightPortion
+      ) {
         for (
           let index = shifted ? -0.5 : 1;
           heightPortion * index + 2 < canvas.height;
@@ -65,27 +80,46 @@
         }
       }
 
-      function drawCubes() {
+      function drawCubes(size) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.beginPath();
+
+        const widthPortion = canvas.width / size;
+        const heightPortion = canvas.height / size / 2;
 
         for (
           let index = 0;
           widthPortion * (index - 1) < canvas.width;
           index += 0.5
         ) {
-          drawOneVerticalStep(index, !Number.isInteger(index));
+          drawOneVerticalStep(
+            index,
+            !Number.isInteger(index),
+            widthPortion,
+            heightPortion
+          );
         }
         for (
           let index = 0;
           heightPortion * index < canvas.height;
           index += 1.5
         ) {
-          drawOneHorizontalStep(index, !Number.isInteger(index));
+          drawOneHorizontalStep(
+            index,
+            !Number.isInteger(index),
+            widthPortion,
+            heightPortion
+          );
         }
       }
 
-      drawCubes();
+      drawCubes(parseInt(sizeInput.value));
+
+      sizeInput.addEventListener("input", () => {
+        const size = parseInt(sizeInput.value);
+        sizeValue.textContent = size;
+        drawCubes(size);
+      });
     </script>
   </body>
 </html>
