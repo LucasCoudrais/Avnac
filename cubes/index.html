@@ -55,7 +55,7 @@
       function drawOneVerticalStep(widthIndex, shifted) {
         for (
           let index = shifted ? -0.5 : 1;
-          heightPortion * index + 2 < canvas.width;
+          heightPortion * index + 2 < canvas.height;
           index += 3
         ) {
           drawLine(
@@ -68,20 +68,23 @@
       function drawCubes() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.beginPath();
-        
-        drawOneVerticalStep(0, false);
-        drawOneVerticalStep(0.5, true);
-        drawOneVerticalStep(1, false);
-        drawOneVerticalStep(1.5, true);
 
-        drawOneHorizontalStep(0, false);
-        drawOneHorizontalStep(1.5, true);
-        drawOneHorizontalStep(3, false);
-        drawOneHorizontalStep(4.5, true);
-        drawOneHorizontalStep(6, false);
+        for (
+          let index = 0;
+          widthPortion * (index - 1) < canvas.width;
+          index += 0.5
+        ) {
+          drawOneVerticalStep(index, !Number.isInteger(index));
+        }
+        for (
+          let index = 0;
+          heightPortion * index < canvas.height;
+          index += 1.5
+        ) {
+          drawOneHorizontalStep(index, !Number.isInteger(index));
+        }
       }
 
-      // Initial draw
       drawCubes();
     </script>
   </body>
