@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Cercle interactif</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      padding: 20px;
+      gap: 20px;
+    }
+
+    #controls {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    canvas {
+      border: 1px solid #ccc;
+    }
+
+    label {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="myCanvas" width="300" height="300"></canvas>
+
+  <div id="controls">
+    <label for="radius">Rayon : <span id="radiusValue">50</span> px</label>
+    <input type="range" id="radius" min="10" max="140" value="50">
+  </div>
+
+  <script>
+    const canvas = document.getElementById('myCanvas');
+    const ctx = canvas.getContext('2d');
+    const radiusInput = document.getElementById('radius');
+    const radiusValue = document.getElementById('radiusValue');
+
+    function drawCircle(radius) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+      ctx.arc(canvas.width / 2, canvas.height / 2, radius, 0, Math.PI * 2);
+      ctx.fillStyle = 'cornflowerblue';
+      ctx.fill();
+      ctx.stroke();
+    }
+
+    // Initial draw
+    drawCircle(parseInt(radiusInput.value));
+
+    radiusInput.addEventListener('input', () => {
+      const radius = parseInt(radiusInput.value);
+      radiusValue.textContent = radius;
+      drawCircle(radius);
+    });
+  </script>
+
+</body>
+</html>
