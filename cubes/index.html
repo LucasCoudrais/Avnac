@@ -22,7 +22,7 @@
   <body>
     <div id="controls">
       <label for="size">Taille : <span id="sizeValue">10</span> px</label>
-      <input type="range" id="size" min="2" max="20" value="10" />
+      <input type="range" id="size" min="5" max="30" value="10"  />
     </div>
     <canvas id="myCanvas" width="800" height="800"></canvas>
 
@@ -113,12 +113,22 @@
         }
       }
 
+      const startTime = performance.now();
       drawCubes(parseInt(sizeInput.value));
+      const endTime = performance.now();
+      console.log(
+        `Call to doSomething took ${endTime - startTime} milliseconds`
+      );
 
       sizeInput.addEventListener("input", () => {
         const size = parseInt(sizeInput.value);
         sizeValue.textContent = size;
+        const startTime = performance.now();
         drawCubes(size);
+        const endTime = performance.now();
+        console.log(
+          `Call to doSomething took ${endTime - startTime} milliseconds`
+        );
       });
     </script>
   </body>

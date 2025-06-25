@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cubes</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        gap: 10rem;
+      }
+
+      canvas {
+        border: 1px solid #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="controls">
+      <label for="size">Taille : <span id="sizeValue">10</span> px</label>
+      <input type="range" id="size" min="5" max="30" value="10" />
+    </div>
+    <canvas id="myCanvas" width="800" height="800"></canvas>
+
+    <script>
+      const canvas = document.getElementById("myCanvas");
+      const ctx = canvas.getContext("2d");
+
+      const sizeInput = document.getElementById("size");
+      const sizeValue = document.getElementById("sizeValue");
+
+      function drawCube(widthPortion, heightPortion) {
+        ctx.moveTo(widthPortion, heightPortion);
+        ctx.lineTo(widthPortion, heightPortion * 2);
+        ctx.lineTo(widthPortion * 1.5, heightPortion * 2.5);
+        ctx.lineTo(widthPortion * 1.5, heightPortion * 1.5);
+        ctx.lineTo(widthPortion, heightPortion);
+        ctx.lineTo(widthPortion * 1.5, heightPortion * 0.5);
+        ctx.lineTo(widthPortion * 2, heightPortion);
+        ctx.closePath();
+        ctx.stroke();
+      }
+
+      function drawCubes(size) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.beginPath();
+
+        const widthPortion = canvas.width / size;
+        const heightPortion = canvas.height / size / 2;
+
+        drawCube(widthPortion, heightPortion);
+      }
+
+      const startTime = performance.now();
+      drawCubes(parseInt(sizeInput.value));
+      const endTime = performance.now();
+      console.log(
+        `Call to doSomething took ${endTime - startTime} milliseconds`
+      );
+
+      // sizeInput.addEventListener("input", () => {
+      //   const size = parseInt(sizeInput.value);
+      //   sizeValue.textContent = size;
+      //   const startTime = performance.now();
+      //   drawCubes(size);
+      //   const endTime = performance.now();
+      //   console.log(
+      //     `Call to doSomething took ${endTime - startTime} milliseconds`
+      //   );
+      // });
+    </script>
+  </body>
+</html>
